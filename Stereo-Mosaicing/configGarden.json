@@ -1,0 +1,28 @@
+{
+    "video_path": "inputs/Garden.mp4",
+    "frames_limit": 300,
+    "stride": 1,
+    
+    "tracking_y_range": [0.3, 0.7],
+    
+    "feature_params": {
+        "maxCorners": 200,
+        "qualityLevel": 0.01,
+        "minDistance": 30,
+        "blockSize": 7
+    },
+    
+    "lk_params": {
+        "winSize": [25, 25],
+        "maxLevel": 4
+    },
+    
+    "ransac_threshold": 0.75,
+
+    "enable_rotation": true,
+    "enable_x": true,
+    "enable_y": true,
+
+    "video_mosaic_frames": 200, 
+    "video_mosaic_fps": 50
+}

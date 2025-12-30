@@ -1,0 +1,33 @@
+{
+    "video_path": "inputs/Trees.mp4",
+    "frames_limit": -1,
+    "stride": 2,
+    
+    "input_rotation": "CW",
+    "rotate_result_back": true,
+
+    "flip_result": false, 
+
+    "tracking_y_range": [0.0, 1.0],
+    
+    "feature_params": {
+        "maxCorners": 300,
+        "qualityLevel": 0.05,
+        "minDistance": 25,
+        "blockSize": 7
+    },
+    
+    "lk_params": {
+        "winSize": [21, 21],
+        "maxLevel": 3
+    },
+    
+    "ransac_threshold": 1.0,
+
+    "enable_rotation": true,
+    "enable_x": true,
+    "enable_y": true,
+
+    "video_mosaic_frames": 200, 
+    "video_mosaic_fps": 50
+}
