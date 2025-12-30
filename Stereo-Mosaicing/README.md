@@ -1,6 +1,6 @@
 
-![Slit Scan Demo](ReadmeGIf.gif)
-![Slit Scan Demo](ReadmeGIf1.gif)
+![Slit Scan Demo](ReadmeGif.gif)
+![Slit Scan Demo](ReadmeGif1.gif)
 # Video Mosaic - Production-Grade Pipeline
 
 A high-performance computer vision system that generates panoramic video mosaics from video sequences. This project implements a robust pipeline combining sparse optical flow, rigid motion estimation, and dynamic strip stitching to create seamless panoramas and "slit-scan" video effects.
