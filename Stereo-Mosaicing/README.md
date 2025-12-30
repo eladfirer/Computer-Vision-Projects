@@ -132,26 +132,41 @@ The system is fully data-driven via JSON configuration files.
 
 ```json
 {
-    "video_path": "inputs/forest.mp4",
-    "frames_limit": 300,             // Process only first N frames
-    "stride": 2,                     // Skip every Nth frame for speed
+    "video_path": "inputs/video.mp4",
+    "frames_limit": 300,             // Process only first N frames (-1 for all)
+    "stride": 1,                     // Skip every Nth frame for speed
     
-    // Geometric Constraints
-    "enable_rotation": false,        // Solve for theta?
-    "enable_x": true,                // Solve for dx?
-    "enable_y": true,                // Solve for dy?
+    // Transformations
+    "input_rotation": "CW",          // Rotate input: "CW", "CCW", or null
+    "rotate_result_back": true,      // Rotate final video back to original orientation
+    "flip_result": false,            // Horizontally flip frames
     
-    // Tracker Tuning
+    // Tracking Region
+    "tracking_y_range": [0.0, 1.0],  // Vertical range [start, end] for feature tracking (0.0-1.0)
+    
+    // Feature Detection (Shi-Tomasi)
     "feature_params": {
-        "maxCorners": 200,
-        "qualityLevel": 0.01,
-        "minDistance": 30
+        "maxCorners": 200,           // Maximum number of corners to detect
+        "qualityLevel": 0.01,        // Minimum quality threshold (0-1)
+        "minDistance": 30,           // Minimum distance between corners (pixels)
+        "blockSize": 9               // Size of neighborhood for corner detection
     },
-    "ransac_threshold": 2.0,         // Inlier threshold in pixels
+    
+    // Lucas-Kanade Optical Flow
+    "lk_params": {
+        "winSize": [21, 21],         // Search window size [width, height]
+        "maxLevel": 3                // Maximum pyramid level (0 = no pyramid)
+    },
+    
+    // Motion Estimation
+    "ransac_threshold": 2.0,         // Inlier threshold in pixels for RANSAC
+    "enable_rotation": false,        // Solve for rotation (theta)?
+    "enable_x": true,                // Solve for horizontal translation (dx)?
+    "enable_y": true,                // Solve for vertical translation (dy)?
     
     // Output Settings
-    "video_mosaic_frames": 100,      // Number of frames in output animation
-    "video_mosaic_fps": 30
+    "video_mosaic_frames": 200,      // Number of frames in output animation
+    "video_mosaic_fps": 50           // Frames per second for output video
 }
 ```
 
