@@ -18,7 +18,7 @@ The system does not rely on simple frame differencing. Instead, it uses a robust
 We utilize the Shi-Tomasi Corner Detector (`cv2.goodFeaturesToTrack`) to identify high-contrast "corners" in the image that are invariant to translation. This provides a stable set of points to track.
 
 **Sparse Optical Flow (Lucas-Kanade):**
-We track these specific keypoints into the next frame using Pyramidal Lucas-Kanade Optical Flow (`cv2.calcOpticalFlowPyrLK`). The pyramidal approach allows the tracker to handle larger displacements by processing the image at multiple scales.
+We track the identified keypoints into the next frame using the Lucas-Kanade algorithm. To handle fast camera movements and large displacements, we utilize a Pyramidal approach (Coarse-to-Fine). The algorithm first estimates the motion on downscaled (smaller) versions of the image to capture the general movement direction, and then iteratively refines the position on higher resolutions for sub-pixel accuracy.
 
 ### 2. Geometry & Robust Estimation
 
