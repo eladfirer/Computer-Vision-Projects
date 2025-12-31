@@ -5,7 +5,7 @@
 ![Slit Scan Demo](gifs/ReadmeGIf.gif)
 # Video Mosaic 
 
-A high-performance computer vision system that generates panoramic video mosaics from video sequences. This project implements a robust pipeline combining sparse optical flow, rigid motion estimation, and dynamic strip stitching to create seamless panoramas and "slit-scan" video effects.
+A professional computer vision system that generates panoramic video mosaics from video sequences. This project implements a robust pipeline combining sparse optical flow, rigid motion estimation, and dynamic strip stitching to create seamless panoramas and "slit-scan" video effects.
 ## 🧠 Algorithmic Core
 
 This pipeline relies on a sequence of classical computer vision algorithms to estimate camera motion and reconstruct the scene, such as Shi-Tomasi, Lucas-Kanade, SVD, and RANSAC.
