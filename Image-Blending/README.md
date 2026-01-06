@@ -10,7 +10,7 @@
 
 # Pyramid Blending & Hybrid Images Toolkit
 
-A robust computer vision system implementing multi-scale image processing techniques. This project focuses on **Laplacian Pyramid Blending** for seamless image compositing and **Hybrid Images** for frequency-based optical illusions, backed by a complete FFT analysis pipeline.
+A professional computer vision system implementing multi-scale image processing techniques. This project focuses on **Laplacian Pyramid Blending** for seamless image compositing and **Hybrid Images** for frequency-based optical illusions, backed by a complete FFT analysis pipeline.
 
 ## 🧠 Algorithmic Core
 
