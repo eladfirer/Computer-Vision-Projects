@@ -108,17 +108,17 @@ class VideoMosaicPipeline:
         motions: list[np.ndarray],
         output_path: Path
     ) -> None:
-        """Generate video mosaic with animated slit scanning.
+        """Generate video mosaic with centered panoramas.
         
-        Creates a video where the panorama is gradually revealed by scanning
-        the slit position from right to left across all frames.
+        Creates a video where each frame contains one panorama, but all panoramas
+        are centered in the frame so the central image changes rather than panning.
         
         Args:
             frames: List of processed video frames
             motions: List of motion vectors from tracking
             output_path: Path to save output video
         """
-        logger.info("Generating video mosaic with animated slit scanning")
+        logger.info("Generating video mosaic with centered panoramas")
         
         n_frames = self.config.video_mosaic_frames
         fps = self.config.video_mosaic_fps
@@ -126,27 +126,42 @@ class VideoMosaicPipeline:
         # Slit ratios: 1.0 (right) -> 0.0 (left)
         slit_ratios = np.linspace(1.0, 0.0, n_frames)
         
-        # Calculate base panorama dimensions (unrotated)
-        temp_strips = calculate_strip_boundaries_dynamic(
-            motions, frames[0].shape[1], slit_ratio=0.5
-        )
-        temp_pano = stitch_from_strips(frames, temp_strips, motions)
-        
-        unrotated_h, unrotated_w = temp_pano.shape[:2]
         frame_w = frames[0].shape[1]
+        is_color = len(frames[0].shape) == 3
         
-        # Canvas dimensions (before rotation)
-        canvas_w = unrotated_w + frame_w
-        canvas_h = unrotated_h
+        # Generate all panoramas first to determine dimensions
+        panoramas = []
+        panorama_widths = []
+        panorama_heights = []
+        
+        for idx, ratio in enumerate(slit_ratios):
+            if idx % 10 == 0:
+                logger.debug(
+                    f"Generating panorama {idx}/{n_frames} (Ratio: {ratio:.2f})"
+                )
+            
+            # Calculate strips for this slit ratio
+            strips = calculate_strip_boundaries_dynamic(
+                motions, frame_w, slit_ratio=ratio
+            )
+            
+            # Stitch panorama
+            pano = stitch_from_strips(frames, strips, motions)
+            panoramas.append(pano)
+            panorama_widths.append(pano.shape[1])
+            panorama_heights.append(pano.shape[0])
+        
+        # Find minimum dimensions for video (crop during video writing, not before)
+        min_width = min(panorama_widths)
+        min_height = min(panorama_heights)
         
         # Final video dimensions (after rotation if needed)
         if self.config.rotate_result_back and self.config.input_rotation:
-            # After rotation, width and height swap
-            final_h, final_w = canvas_w, canvas_h
+            final_h, final_w = min_width, min_height
         else:
-            final_h, final_w = canvas_h, canvas_w
+            final_h, final_w = min_height, min_width
         
-        # Initialize video writer
+        # Initialize video writer with minimum dimensions
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
         video = cv2.VideoWriter(
             str(output_path), fourcc, fps, (final_w, final_h)
@@ -156,36 +171,24 @@ class VideoMosaicPipeline:
             raise RuntimeError(f"Failed to initialize video writer: {output_path}")
         
         try:
-            # Generate each frame
+            # Generate each frame - one panorama per frame, centered
             for idx, ratio in enumerate(slit_ratios):
                 if idx % 10 == 0:
                     logger.debug(
                         f"Rendering frame {idx}/{n_frames} (Ratio: {ratio:.2f})"
                     )
                 
-                # Calculate strips for this slit ratio
-                strips = calculate_strip_boundaries_dynamic(
-                    motions, frame_w, slit_ratio=ratio
-                )
+                # Get the panorama for this frame
+                pano = panoramas[idx]
+                pano_h, pano_w = pano.shape[:2]
                 
-                # Stitch panorama
-                pano_frame = stitch_from_strips(frames, strips, motions)
+                # Crop from center to match minimum dimensions (like ex4.py)
+                start_y = (pano_h - min_height) // 2
+                start_x = (pano_w - min_width) // 2
+                cropped = pano[start_y:start_y + min_height, start_x:start_x + min_width]
                 
-                # Resize to match base dimensions
-                if pano_frame.shape[0] != unrotated_h or pano_frame.shape[1] != unrotated_w:
-                    pano_frame = cv2.resize(pano_frame, (unrotated_w, unrotated_h))
-                
-                # Create video frame canvas
-                video_frame = np.zeros((canvas_h, canvas_w, 3), dtype=np.uint8)
-                
-                # Calculate panorama position (animated from right to left)
-                start_x = int(ratio * (canvas_w - unrotated_w))
-                end_x = start_x + unrotated_w
-                start_x = max(0, start_x)
-                end_x = min(canvas_w, end_x)
-                
-                # Place panorama on canvas
-                video_frame[:, start_x:end_x] = pano_frame
+                # Create video frame from cropped panorama
+                video_frame = cropped.copy()
                 
                 # Rotate entire frame if needed
                 if self.config.rotate_result_back and self.config.input_rotation:

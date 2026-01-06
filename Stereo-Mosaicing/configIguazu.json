@@ -23,6 +23,6 @@
     "enable_x": true,
     "enable_y": true,
 
-    "video_mosaic_frames": 200, 
-    "video_mosaic_fps": 50
+    "video_mosaic_frames": 100, 
+    "video_mosaic_fps": 30
 }

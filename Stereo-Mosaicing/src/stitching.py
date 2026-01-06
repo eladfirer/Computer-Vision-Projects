@@ -119,6 +119,7 @@ def stitch_from_strips(
     # Stitch strips
     curr_x = 0
     y_global_offset = -min_dy + 25  # Center vertically
+    all_y_starts = []
     
     for i, frame in enumerate(frames):
         x_start, x_end = strips[i]
@@ -128,6 +129,8 @@ def stitch_from_strips(
         # Calculate vertical position
         offset_y = cum_dy[i] + y_global_offset
         y_start = int(offset_y)
+        all_y_starts.append(y_start)
+        
         h_cut = min(h, total_height - y_start)
         
         # Place strip on canvas
@@ -136,8 +139,15 @@ def stitch_from_strips(
         
         curr_x += strip_w
     
+    # Crop top and bottom based on actual y positions
+    crop_top = int(np.max(all_y_starts))
+    crop_bottom = int(np.min([y + h for y in all_y_starts]))
+    
+    if crop_bottom > crop_top + 10:
+        canvas = canvas[crop_top:crop_bottom, :]
+    
     logger.debug(
-        f"Stitched panorama: {total_height}x{total_width} from {len(frames)} frames"
+        f"Stitched panorama: {canvas.shape[0]}x{canvas.shape[1]} from {len(frames)} frames"
     )
     return canvas
 
