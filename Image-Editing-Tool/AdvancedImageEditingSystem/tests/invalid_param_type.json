@@ -1,0 +1,7 @@
+{
+  "input": "image.png",
+  "output": "invalid_param_type.png",
+  "operations": [
+    { "type": "brightness", "value": "a lot" }
+  ]
+} 

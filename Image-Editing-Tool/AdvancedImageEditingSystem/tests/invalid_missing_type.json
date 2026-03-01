@@ -1,0 +1,7 @@
+{
+  "input": "image.png",
+  "output": "invalid_missing_type.png",
+  "operations": [
+    { "value": 1.2 }
+  ]
+} 

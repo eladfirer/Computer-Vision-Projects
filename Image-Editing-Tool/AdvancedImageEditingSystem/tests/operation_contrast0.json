@@ -1,0 +1,7 @@
+{
+  "input": "image.png",
+  "output": "operation_contrast0.png",
+  "operations": [
+    { "type": "contrast", "value": 0 }
+  ]
+} 

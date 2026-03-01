@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+DIR="$(cd "$(dirname "$0")" && pwd)"
+java -cp "$DIR/edit-image.jar:$DIR/lib/json-20230227.jar" Shell "$@"

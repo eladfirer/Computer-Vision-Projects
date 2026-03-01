@@ -1,0 +1,7 @@
+{
+  "input": "image.png",
+  "output": "operation_brightness0.png",
+  "operations": [
+    { "type": "brightness", "value": 0 }
+  ]
+} 

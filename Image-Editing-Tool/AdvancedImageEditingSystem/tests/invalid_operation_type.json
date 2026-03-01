@@ -1,0 +1,7 @@
+{
+  "input": "image.png",
+  "output": "invalid_operation_type.png",
+  "operations": [
+    { "type": "nonexistent", "value": 1 }
+  ]
+} 

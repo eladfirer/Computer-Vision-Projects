@@ -1,0 +1,7 @@
+{
+  "input": "image.png",
+  "output": "operation_sobel_edge.png",
+  "operations": [
+    { "type": "sobel", "threshold": 5 }
+  ]
+} 

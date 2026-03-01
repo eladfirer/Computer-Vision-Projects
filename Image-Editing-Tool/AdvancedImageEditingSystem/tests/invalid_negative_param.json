@@ -1,0 +1,7 @@
+{
+  "input": "image.png",
+  "output": "invalid_negative_param.png",
+  "operations": [
+    { "type": "box", "width": -3, "height": 2 }
+  ]
+} 

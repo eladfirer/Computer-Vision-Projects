@@ -1,0 +1,9 @@
+{
+  "input": "image.png",
+  "output": "operation_combo_multiple.png",
+  "operations": [
+    { "type": "brightness", "value": 1.2 },
+    { "type": "contrast", "value": 1.5 },
+    { "type": "box", "width": 3, "height": 3 }
+  ]
+} 

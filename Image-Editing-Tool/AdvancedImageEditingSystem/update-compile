@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -e
+
+echo "Cleaning out old build…"
+rm -rf out
+mkdir -p out
+
+echo "Finding all Java sources…"
+find src -name "*.java" > sources.txt
+
+echo "Compiling with org.json on the classpath…"
+javac -cp "lib/json-20230227.jar" -d out @sources.txt
+
+echo "Writing MANIFEST.MF…"
+cat > out/MANIFEST.MF << EOF
+Main-Class: Shell
+
+EOF
+
+echo "Packaging into edit-image.jar…"
+jar cfm edit-image.jar out/MANIFEST.MF -C out .
+
+echo "Removing temporary files…"
+rm sources.txt
+
+echo "✅ Build complete."

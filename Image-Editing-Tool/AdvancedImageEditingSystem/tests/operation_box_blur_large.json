@@ -1,0 +1,7 @@
+{
+  "input": "image.png",
+  "output": "operation_box_blur_large.png",
+  "operations": [
+    { "type": "box", "width": 10, "height": 10 }
+  ]
+} 
