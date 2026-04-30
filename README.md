@@ -1,6 +1,6 @@
 # Computer Vision Projects
 
-A collection of production-grade computer vision projects demonstrating expertise in image processing, video analysis, and classical CV algorithms. Each project is implemented with clean architecture, comprehensive documentation, and modular design.
+A collection of production-grade computer vision projects demonstrating knowledge in image processing, video analysis, and classical CV algorithms. Each project is implemented with clean architecture, comprehensive documentation, and modular design.
 
 ---
 
